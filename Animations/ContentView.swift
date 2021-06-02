@@ -20,6 +20,10 @@ struct ContentView: View {
     .clipShape(Circle())
     .scaleEffect(animationAmount)
     .animation(.default)
+    // Add a Gaussian blur with a special radius:
+    // Blur raidus will start at 0 (no blur), then move to
+    // 1.25 points, 2.5 points, 3.75 points, and beyond.
+    .blur(radius: (animationAmount - 1) * 5)
   }
 }
 
