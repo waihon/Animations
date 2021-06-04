@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+  @State private var enabled = false
+
   var body: some View {
     Button("Tap Me") {
-      // do nothing
+      self.enabled.toggle()
     }
     .frame(width: 200, height: 200)
-    .background(Color.blue)
+    .background(enabled ? Color.blue : Color.red)
     .foregroundColor(.white)
   }
 }
