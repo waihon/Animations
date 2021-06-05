@@ -29,6 +29,7 @@ struct ContentView: View {
           // which cannot be implicitly ignored
           .onEnded { _ in self.dragAmount = .zero }
       )
+      .animation(.spring())
     
   }
 }
