@@ -8,31 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
-  // 1. A state to store the amount of drag
+  let letters = Array("Hello SwiftUI")
+  @State private var enabled = false
   @State private var dragAmount = CGSize.zero
 
   var body: some View {
-    LinearGradient(gradient: Gradient(colors: [.yellow, .red]),
-                   startPoint: .topLeading,
-                   endPoint: .bottomTrailing)
-      .frame(width: 300, height: 200)
-      .clipShape(RoundedRectangle(cornerRadius: 10))
-      // 2. Adjust the X and Y coordiante of a view
-      // without moving other views around it.
-      .offset(dragAmount)
-      // 3. Create a DragGesture and attach it to the card
-      .gesture(
-        DragGesture()
-          // translation tells us how far it's moved from the start point
-          .onChanged { self.dragAmount = $0.translation }
-          // Contextual type for closure argument list expects 1 argument,
-          // which cannot be implicitly ignored
-          .onEnded { _ in
-            withAnimation(.spring()) {
-              self.dragAmount = .zero
-            }
-          }
-      )
+    HStack(spacing: 0) {
+      ForEach(0 ..< letters.count) { num in
+        Text(String(self.letters[num]))
+          .padding(5)
+          .font(.title)
+          .background(self.enabled ? Color.blue : Color.red)
+          .offset(self.dragAmount)
+          .animation(Animation.default.delay(Double(num) / 20))
+      }
+    }
+    .gesture(
+      DragGesture()
+        .onChanged {
+          self.dragAmount = $0.translation
+        }
+        .onEnded { _ in
+          self.dragAmount = .zero
+          self.enabled.toggle()
+        }
+    )
   }
 }
 
