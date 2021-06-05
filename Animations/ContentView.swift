@@ -27,10 +27,12 @@ struct ContentView: View {
           .onChanged { self.dragAmount = $0.translation }
           // Contextual type for closure argument list expects 1 argument,
           // which cannot be implicitly ignored
-          .onEnded { _ in self.dragAmount = .zero }
+          .onEnded { _ in
+            withAnimation(.spring()) {
+              self.dragAmount = .zero
+            }
+          }
       )
-      .animation(.spring())
-    
   }
 }
 
