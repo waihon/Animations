@@ -8,18 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
-  @State private var enabled = false
+  // 1. A state to store the amount of drag
+  @State private var dragAmount = CGSize.zero
 
   var body: some View {
-    Button("Tap Me") {
-      self.enabled.toggle()
-    }
-    .frame(width: 200, height: 200)
-    .background(enabled ? Color.blue : Color.red)
-    .animation(nil)
-    .foregroundColor(.white)
-    .clipShape(RoundedRectangle(cornerRadius: enabled ? 60 : 0))
-    .animation(.interpolatingSpring(stiffness: 10, damping: 1))
+    LinearGradient(gradient: Gradient(colors: [.yellow, .red]),
+                   startPoint: .topLeading,
+                   endPoint: .bottomTrailing)
+      .frame(width: 300, height: 200)
+      .clipShape(RoundedRectangle(cornerRadius: 10))
+      // 2. Adjust the X and Y coordiante of a view
+      // without moving other views around it.
+      .offset(dragAmount)
+      // 3. Create a DragGesture and attach it to the card
+      .gesture(
+        DragGesture()
+          // translation tells us how far it's moved from the start point
+          .onChanged { self.dragAmount = $0.translation }
+          // Contextual type for closure argument list expects 1 argument,
+          // which cannot be implicitly ignored
+          .onEnded { _ in self.dragAmount = .zero }
+      )
+    
   }
 }
 
